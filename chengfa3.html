@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表内乘法练习-阶段3</title>
+    <style>
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+/*        
+        table, th, td {
+            border: 1px solid black;
+        }
+*/        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            font-size: 20px;
+            width: 33.33%; /* 3列等宽 */
+        }
+        th {
+            font-weight: bold;
+        }
+        /* 打印时隐藏分隔线 */
+        @media print {
+            hr {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="contentContainer"></div>
+
+    <script>
+        // 获取URL参数page的值，默认为1
+        function getPageParam() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const page = parseInt(urlParams.get('page')) || 1;
+            return Math.max(1, page); // 确保至少为1
+        }
+
+        // 定义乘法题目列表（可以重复）
+        const multiplicationProblems = [
+            "________ × 1 = 1",
+            "________ × 2 = 2",
+            "________ × 3 = 3",
+            "________ × 4 = 4",
+            "________ × 5 = 5",
+            "________ × 6 = 6",
+            "________ × 7 = 7",
+            "________ × 8 = 8",
+            "________ × 9 = 9",
+            "________ × 2 = 4",
+            "________ × 3 = 6",
+            "________ × 4 = 8",
+            "________ × 5 = 10",
+            "________ × 6 = 12",
+            "________ × 7 = 14",
+            "________ × 8 = 16",
+            "________ × 9 = 18",
+            "________ × 3 = 9",
+            "________ × 4 = 12",
+            "________ × 5 = 15",
+            "________ × 6 = 18",
+            "________ × 7 = 21",
+            "________ × 8 = 24",
+            "________ × 9 = 27",
+            "________ × 4 = 16",
+            "________ × 5 = 20",
+            "________ × 6 = 24",
+            "________ × 7 = 28",
+            "________ × 8 = 32",
+            "________ × 9 = 36",
+            "________ × 5 = 25",
+            "________ × 6 = 30",
+            "________ × 7 = 35",
+            "________ × 8 = 40",
+            "________ × 9 = 45",
+            "________ × 6 = 36",
+            "________ × 7 = 42",
+            "________ × 8 = 48",
+            "________ × 9 = 54",
+            "________ × 7 = 49",
+            "________ × 8 = 56",
+            "________ × 9 = 63",
+            "________ × 8 = 64",
+            "________ × 9 = 72",
+            "________ × 9 = 81",
+            "1 × ________ = 1",
+            "1 × ________ = 2",
+            "1 × ________ = 3",
+            "1 × ________ = 4",
+            "1 × ________ = 5",
+            "1 × ________ = 6",
+            "1 × ________ = 7",
+            "1 × ________ = 8",
+            "1 × ________ = 9",
+            "2 × ________ = 4",
+            "2 × ________ = 6",
+            "2 × ________ = 8",
+            "2 × ________ = 10",
+            "2 × ________ = 12",
+            "2 × ________ = 14",
+            "2 × ________ = 16",
+            "2 × ________ = 18",
+            "3 × ________ = 9",
+            "3 × ________ = 12",
+            "3 × ________ = 15",
+            "3 × ________ = 18",
+            "3 × ________ = 21",
+            "3 × ________ = 24",
+            "3 × ________ = 27",
+            "4 × ________ = 16",
+            "4 × ________ = 20",
+            "4 × ________ = 24",
+            "4 × ________ = 28",
+            "4 × ________ = 32",
+            "4 × ________ = 36",
+            "5 × ________ = 25",
+            "5 × ________ = 30",
+            "5 × ________ = 35",
+            "5 × ________ = 40",
+            "5 × ________ = 45",
+            "6 × ________ = 36",
+            "6 × ________ = 42",
+            "6 × ________ = 48",
+            "6 × ________ = 54",
+            "7 × ________ = 49",
+            "7 × ________ = 56",
+            "7 × ________ = 63",
+            "8 × ________ = 64",
+            "8 × ________ = 72",
+            "9 × ________ = 81"
+        ];
+
+        // 创建单个表格
+        function createTable() {
+            const table = document.createElement('table');
+            // 表头行
+            const headerRow = table.insertRow();
+            const headerCell1 = headerRow.insertCell(0);
+            const headerCell2 = headerRow.insertCell(1);
+            const headerCell3 = headerRow.insertCell(2);
+            headerCell1.textContent = "姓名：";
+            headerCell2.textContent = "日期：";
+            headerCell3.textContent = "用时：";
+            // 空行
+            const emptyRow = table.insertRow();
+            const emptyCell = emptyRow.insertCell(0);
+            emptyCell.colSpan = 3;
+            emptyCell.textContent = "-----------------------------------------------------------------";
+            
+            // 生成20行内容
+            for (let r = 0; r < 20; r++) {
+                const row = table.insertRow();
+
+                for (let c = 0; c < 3; c++) {
+                    const cell = row.insertCell(c);
+                    const randomProblem = multiplicationProblems[Math.floor(Math.random() * multiplicationProblems.length)];
+                    cell.textContent = randomProblem;
+                }
+            }
+            return table;
+        }
+
+        // 页面加载时生成内容
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('contentContainer');
+            const pageCount = getPageParam();
+            for (let i = 1; i <= pageCount; i++) {
+                // 添加表格
+                const table = createTable();
+                container.appendChild(table);
+                // 如果不是最后一页，添加分页符和分隔线
+                if (i < pageCount) {
+                    // 添加分隔线
+                    const separator = document.createElement('hr');
+                    separator.style.border = '2px solid #ccc';
+                    separator.style.margin = '3px 0';
+                    container.appendChild(separator);
+                    // 添加分页符
+		    table.style.pageBreakAfter = 'always';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

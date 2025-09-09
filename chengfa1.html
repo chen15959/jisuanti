@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表内乘法练习-阶段1</title>
+    <style>
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+/*        
+        table, th, td {
+            border: 1px solid black;
+        }
+*/        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            font-size: 20px;
+            width: 33.33%; /* 3列等宽 */
+        }
+        th {
+            font-weight: bold;
+        }
+
+        /* 打印时隐藏分隔线 */
+        @media print {
+            hr {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="contentContainer"></div>
+
+    <script>
+        // 获取URL参数page的值，默认为1
+        function getPageParam() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const page = parseInt(urlParams.get('page')) || 1;
+            return Math.max(1, page); // 确保至少为1
+        }
+
+        // 定义乘法题目列表（可以重复）
+        const multiplicationProblems = [
+            "1 × 1 = ",
+            "1 × 2 = ",
+            "1 × 3 = ",
+            "1 × 4 = ",
+            "1 × 5 = ",
+            "1 × 6 = ",
+            "1 × 7 = ",
+            "1 × 8 = ",
+            "1 × 9 = ",
+//            "2 × 1 = ",
+            "2 × 2 = ",
+            "2 × 3 = ",
+            "2 × 4 = ",
+            "2 × 5 = ",
+            "2 × 6 = ",
+            "2 × 7 = ",
+            "2 × 8 = ",
+            "2 × 9 = ",
+//            "3 × 1 = ",
+//            "3 × 2 = ",
+            "3 × 3 = ",
+            "3 × 4 = ",
+            "3 × 5 = ",
+            "3 × 6 = ",
+            "3 × 7 = ",
+            "3 × 8 = ",
+            "3 × 9 = ",
+//            "4 × 1 = ",
+//            "4 × 2 = ",
+//            "4 × 3 = ",
+            "4 × 4 = ",
+            "4 × 5 = ",
+            "4 × 6 = ",
+            "4 × 7 = ",
+            "4 × 8 = ",
+            "4 × 9 = ",
+//            "5 × 1 = ",
+//            "5 × 2 = ",
+//            "5 × 3 = ",
+//            "5 × 4 = ",
+            "5 × 5 = ",
+            "5 × 6 = ",
+            "5 × 7 = ",
+            "5 × 8 = ",
+            "5 × 9 = ",
+//            "6 × 1 = ",
+//            "6 × 2 = ",
+//            "6 × 3 = ",
+//            "6 × 4 = ",
+//            "6 × 5 = ",
+            "6 × 6 = ",
+            "6 × 7 = ",
+            "6 × 8 = ",
+            "6 × 9 = ",
+//            "7 × 1 = ",
+//            "7 × 2 = ",
+//            "7 × 3 = ",
+//            "7 × 4 = ",
+//            "7 × 5 = ",
+//            "7 × 6 = ",
+            "7 × 7 = ",
+            "7 × 8 = ",
+            "7 × 9 = ",
+//            "8 × 1 = ",
+//            "8 × 2 = ",
+//            "8 × 3 = ",
+//            "8 × 4 = ",
+//            "8 × 5 = ",
+//            "8 × 6 = ",
+//            "8 × 7 = ",
+            "8 × 8 = ",
+            "8 × 9 = ",
+//            "9 × 1 = ",
+//            "9 × 2 = ",
+//            "9 × 3 = ",
+//            "9 × 4 = ",
+//            "9 × 5 = ",
+//            "9 × 6 = ",
+//            "9 × 7 = ",
+//            "9 × 8 = ",
+            "9 × 9 = "
+        ];
+
+        // 创建单个表格
+        function createTable() {
+            const table = document.createElement('table');
+            // 表头行
+            const headerRow = table.insertRow();
+            const headerCell1 = headerRow.insertCell(0);
+            const headerCell2 = headerRow.insertCell(1);
+            const headerCell3 = headerRow.insertCell(2);
+            headerCell1.textContent = "姓名：";
+            headerCell2.textContent = "日期：";
+            headerCell3.textContent = "用时：";
+            // 空行
+            const emptyRow = table.insertRow();
+            const emptyCell = emptyRow.insertCell(0);
+            emptyCell.colSpan = 3;
+            emptyCell.textContent = "-----------------------------------------------------------------";
+            
+            // 生成20行内容
+            for (let r = 0; r < 20; r++) {
+                const row = table.insertRow();
+
+                for (let c = 0; c < 3; c++) {
+                    const cell = row.insertCell(c);
+                    const randomProblem = multiplicationProblems[Math.floor(Math.random() * multiplicationProblems.length)];
+                    cell.textContent = randomProblem;
+                }
+            }
+            return table;
+        }
+
+        // 页面加载时生成内容
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('contentContainer');
+            const pageCount = getPageParam();
+            for (let i = 1; i <= pageCount; i++) {
+                // 添加表格
+                const table = createTable();
+                container.appendChild(table);
+                // 如果不是最后一页，添加分页符和分隔线
+                if (i < pageCount) {
+                    // 添加分隔线
+                    const separator = document.createElement('hr');
+                    separator.style.border = '2px solid #ccc';
+                    separator.style.margin = '3px 0';
+                    container.appendChild(separator);
+
+                    // 添加分页符
+		    table.style.pageBreakAfter = 'always';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
