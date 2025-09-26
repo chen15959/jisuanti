@@ -210,52 +210,32 @@
         ];
 
 
-        //默认的题目集合
-        const multiplicationProblems = [
-            ...questions_a_1,
-            ...questions_a_2,
-            ...questions_a_2,
-            ...questions_a_3,
-            ...questions_a_3,
-            ...questions_a_4,
-            ...questions_a_4,
-            ...questions_a_5,
-            ...questions_a_5,
-            ...questions_a_6,
-            ...questions_a_6,
-            ...questions_a_7,
-            ...questions_a_7,
-            ...questions_a_8,
-            ...questions_a_8,
-            ...questions_a_9,
-            ...questions_a_9,
+        const source = [
+            null,
+            questions_a_1,
+            questions_a_2,
+            questions_a_3,
+            questions_a_4,
+            questions_a_5,
+            questions_a_6,
+            questions_a_7,
+            questions_a_8,
+            questions_a_9,
         ];
+            
+        const numbers = "123456789";
+
+        //默认的题目集合
+        const multiplicationProblems = [];
         
 
         //参数中是否指定了特别加强
         const urlParams = new URLSearchParams(window.location.search);
-        const more = urlParams.get('more');
-        if (more !== null) {
-            const source = [
-                null,
-                questions_a_1,
-                questions_a_2,
-                questions_a_3,
-                questions_a_4,
-                questions_a_5,
-                questions_a_6,
-                questions_a_7,
-                questions_a_8,
-                questions_a_9,
-            ];
-            
-            const numbers = "123456789";
-        
-            for (let c of more) {
-                if (numbers.includes(c)) {
-                    multiplicationProblems.push(...source[parseInt(c) || 0]);
-                    console.log(c);
-                }
+        const todo = urlParams.get('test') || '12233445566778899';
+        for (let c of todo) {
+            if (numbers.includes(c)) {
+                multiplicationProblems.push(...source[parseInt(c) || 0]);
+                console.log(c);
             }
         }
         
