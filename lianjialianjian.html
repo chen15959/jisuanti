@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>连加连减练习</title>
+    <style>
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+/*        
+        table, th, td {
+            border: 1px solid black;
+        }
+*/        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            font-size: 20px;
+			nowrap
+        }
+        th {
+            font-weight: bold;
+        }
+
+        /* 打印时隐藏分隔线 */
+        @media print {
+            hr {
+                display: none !important;
+            }
+
+            .no-print {
+                visibility: hidden !important;
+                /* 或者使用 display: none; */
+            }
+            
+            /* 替代方案：显示占位文本 */
+            .no-print-content::after {
+                content: "【内容不打印】";
+                color: #999;
+                font-style: italic;
+            }
+            
+            /* 完全隐藏单元格 */
+            .hide-completely {
+                display: none !important;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div id="contentContainer"></div>
+
+    <script>
+        // 获取URL参数page的值，默认为1
+        function getPageParam() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const page = parseInt(urlParams.get('page')) || 1;
+            return Math.max(1, page); // 确保至少为1
+        }
+
+		
+		function createQuestion() {
+			const urlParams = new URLSearchParams(window.location.search);
+		    const itemCount = urlParams.get('level') || 8;
+			
+			let numbers = [];
+			let result = 0;
+			let retstr = '';
+
+			while (true) {
+				numbers = Array.from({length: itemCount}, () => Math.floor(Math.random() * 99) + 1);
+				for (let i = 0; i < itemCount; ++i) {
+					if (i % 2 == 0) {
+						result += numbers[i];
+					}
+					else {
+						result -= numbers[i];
+					}
+				}
+				
+				if (result >= 0) {
+					let retstr = `${numbers[0]}`;
+
+					for (let i = 1; i < itemCount; ++i) {
+						if (i % 2 == 0) {
+							retstr += ' - ';
+						}
+						else {
+							retstr += ' + ';
+						}
+						
+						retstr += `${numbers[i]}`;
+					}
+					
+					return retstr + ` = ${result}`;
+				}
+			}
+		}
+		
+
+		function getFontSize(input) {
+			console.log(input.length);
+
+			if (input.length < 44) {
+				return '36px';
+			}
+			else if (input.length < 46) {
+				return '34px';
+			}
+			else if (input.length < 48) {
+				return '32px';
+			}
+			else if (input.length < 52) {
+				return '30px';
+			}
+			else if (input.length < 56) {
+				return '28px';
+			}
+			else if (input.length < 60) {
+				return '26px';
+			}
+			else if (input.length < 66) {
+				return '24px';
+			}
+			else if (input.length < 72) {
+				return '22px';
+			}
+			else if (input.length < 78) {
+				return '20px';
+			}
+			else if (input.length < 86) {
+				return '18px';
+			}
+			else if (input.length < 98) {
+				return '16px';
+			}
+			else if (input.length < 112) {
+				return '14px';
+			}
+			else if (input.length < 130) {
+				return '12px';
+			}
+			else {
+				return '10px';
+			}
+		}
+        
+        
+
+        // 创建单个表格
+        function createTable() {
+            const table = document.createElement('table');
+            // 表头行
+            const headerRow = table.insertRow();
+            const headerCell1 = headerRow.insertCell(0);
+            const headerCell2 = headerRow.insertCell(1);
+            const headerCell3 = headerRow.insertCell(2);
+            headerCell1.textContent = "姓名：";
+            headerCell2.textContent = "日期：";
+            headerCell3.textContent = "用时：";
+            // 空行
+            const emptyRow = table.insertRow();
+            const emptyCell = emptyRow.insertCell(0);
+            emptyCell.colSpan = 3;
+            emptyCell.textContent = "-----------------------------------------------------------------";
+            
+            // 生成20行内容
+            for (let r = 0; r < 20; r++) {
+                const row = table.insertRow();
+
+                const cell = row.insertCell(0);
+				
+				if (r % 5 == 0) {
+					const randomProblem = createQuestion();
+					cell.textContent = randomProblem;
+					cell.style.fontSize = getFontSize(randomProblem);
+
+					//cell.textContent = '1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0';
+					//cell.style.fontSize = '12px';
+				}
+				else {
+					cell.textContent = '1';
+					cell.classList.add('no-print');
+					cell.style.color = 'white';
+				}
+				
+				cell.colSpan = 3;
+            }
+            return table;
+        }
+
+        // 页面加载时生成内容
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('contentContainer');
+            const pageCount = getPageParam();
+            for (let i = 1; i <= pageCount; i++) {
+                // 添加表格
+                const table = createTable();
+                container.appendChild(table);
+                // 如果不是最后一页，添加分页符和分隔线
+                if (i < pageCount) {
+                    // 添加分隔线
+                    const separator = document.createElement('hr');
+                    separator.style.border = '2px solid #ccc';
+                    separator.style.margin = '3px 0';
+                    container.appendChild(separator);
+
+                    // 添加分页符
+                    table.style.pageBreakAfter = 'always';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
