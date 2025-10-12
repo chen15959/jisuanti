@@ -19,7 +19,7 @@
             padding: 10px;
             text-align: left;
             font-size: 20px;
-			nowrap
+			white-space: nowrap
         }
         th {
             font-weight: bold;
@@ -56,23 +56,32 @@
 
     <script>
         // 获取URL参数page的值，默认为1
+
         function getPageParam() {
             const urlParams = new URLSearchParams(window.location.search);
             const page = parseInt(urlParams.get('page')) || 1;
             return Math.max(1, page); // 确保至少为1
         }
 
+		function getParam(key, defaultValue) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(key) || defaultValue;
+		}
+
+
 		
 		function createQuestion() {
-			const urlParams = new URLSearchParams(window.location.search);
-		    const itemCount = urlParams.get('level') || 8;
+		    const itemCount = parseInt(getParam('level', 8));
+			const numberPower = parseInt(getParam('power', 2));
+			const numberRange = 10 ** numberPower - 1;
 			
 			let numbers = [];
 			let result = 0;
 			let retstr = '';
 
+			
 			while (true) {
-				numbers = Array.from({length: itemCount}, () => Math.floor(Math.random() * 99) + 1);
+				numbers = Array.from({length: itemCount}, () => Math.floor(Math.random() * numberRange) + 1);
 				for (let i = 0; i < itemCount; ++i) {
 					if (i % 2 == 0) {
 						result += numbers[i];
@@ -103,21 +112,20 @@
 		
 
 		function getFontSize(input) {
-			console.log(input.length);
 
-			if (input.length < 44) {
+			if (input.length < 39) {//DONE
 				return '36px';
 			}
-			else if (input.length < 46) {
+			else if (input.length < 42) {//DONE
 				return '34px';
 			}
-			else if (input.length < 48) {
+			else if (input.length < 44) {//DONE
 				return '32px';
 			}
-			else if (input.length < 52) {
+			else if (input.length < 49) {//TODO
 				return '30px';
 			}
-			else if (input.length < 56) {
+			else if (input.length < 51) {//DONE
 				return '28px';
 			}
 			else if (input.length < 60) {
@@ -169,6 +177,7 @@
             emptyCell.textContent = "-----------------------------------------------------------------";
             
             // 生成20行内容
+			let fontSize = -1;
             for (let r = 0; r < 20; r++) {
                 const row = table.insertRow();
 
@@ -177,13 +186,14 @@
 				if (r % 5 == 0) {
 					const randomProblem = createQuestion();
 					cell.textContent = randomProblem;
-					cell.style.fontSize = getFontSize(randomProblem);
+					fontSize = getFontSize(randomProblem);
+					cell.style.fontSize = fontSize;
 
 					//cell.textContent = '1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0';
 					//cell.style.fontSize = '12px';
 				}
 				else {
-					cell.textContent = '1';
+					cell.textContent = `${fontSize}`;
 					cell.classList.add('no-print');
 					cell.style.color = 'white';
 				}
