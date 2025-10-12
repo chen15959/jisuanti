@@ -10,20 +10,32 @@
             border-collapse: collapse;
             margin: 20px auto;
         }
-/*        
+
+		/*
         table, th, td {
             border: 1px solid black;
         }
-*/        
+		*/
+
         th, td {
             padding: 10px;
             text-align: left;
-            font-size: 20px;
-			white-space: nowrap
+            font-size: 28px;
+			white-space: nowrap;
         }
         th {
             font-weight: bold;
         }
+		
+		.question {
+			width: 95%;
+		}
+		
+		.answer {
+			width: 5%;
+			font-size: 10px;
+			color: gray;
+		}
 
         /* 打印时隐藏分隔线 */
         @media print {
@@ -105,7 +117,7 @@
 						retstr += `${numbers[i]}`;
 					}
 					
-					return retstr + ` = ${result}`;
+					return [retstr, `= ${result}`];
 				}
 			}
 		}
@@ -113,46 +125,47 @@
 
 		function getFontSize(input) {
 
-			if (input.length < 39) {//DONE
+			if (input.length < 49) {
 				return '36px';
 			}
-			else if (input.length < 42) {//DONE
-				return '34px';
-			}
-			else if (input.length < 44) {//DONE
+			//else if (input.length < 47) {
+			//	return '34px';
+			//}
+			else if (input.length < 55) {
 				return '32px';
 			}
-			else if (input.length < 49) {//TODO
-				return '30px';
-			}
-			else if (input.length < 51) {//DONE
-				return '28px';
-			}
-			else if (input.length < 60) {
+			//else if (input.length < 55) {
+			//	return '30px';
+			//}
+			//else if (input.length < 55) {
+			//	return '28px';
+			//}
+			else if (input.length < 57) {
 				return '26px';
 			}
-			else if (input.length < 66) {
+			else if (input.length < 61) {
 				return '24px';
 			}
-			else if (input.length < 72) {
+			else if (input.length < 69) {
 				return '22px';
 			}
-			else if (input.length < 78) {
+			else if (input.length < 75) {
 				return '20px';
 			}
-			else if (input.length < 86) {
+			else if (input.length < 97) {
 				return '18px';
 			}
-			else if (input.length < 98) {
+			else if (input.length < 109) {
 				return '16px';
 			}
-			else if (input.length < 112) {
+			else if (input.length < 126) {
 				return '14px';
 			}
-			else if (input.length < 130) {
+			else if (input.length < 150) {
 				return '12px';
 			}
 			else {
+				//179
 				return '10px';
 			}
 		}
@@ -163,45 +176,51 @@
         function createTable() {
             const table = document.createElement('table');
             // 表头行
-            const headerRow = table.insertRow();
-            const headerCell1 = headerRow.insertCell(0);
-            const headerCell2 = headerRow.insertCell(1);
-            const headerCell3 = headerRow.insertCell(2);
-            headerCell1.textContent = "姓名：";
-            headerCell2.textContent = "日期：";
-            headerCell3.textContent = "用时：";
-            // 空行
-            const emptyRow = table.insertRow();
-            const emptyCell = emptyRow.insertCell(0);
-            emptyCell.colSpan = 3;
-            emptyCell.textContent = "-----------------------------------------------------------------";
             
-            // 生成20行内容
+            // 生成行内容
 			let fontSize = -1;
+			let textLength = -1;
             for (let r = 0; r < 20; r++) {
                 const row = table.insertRow();
-
-                const cell = row.insertCell(0);
+                const questionCell = row.insertCell(0);
+				const answerCell = row.insertCell(1);
 				
 				if (r % 5 == 0) {
-					const randomProblem = createQuestion();
-					cell.textContent = randomProblem;
-					fontSize = getFontSize(randomProblem);
-					cell.style.fontSize = fontSize;
+					const randomQuestion = createQuestion();
+					questionCell.textContent = randomQuestion[0];
+					answerCell.textContent = randomQuestion[1];
+					
+					questionCell.classList.add('question');
+					answerCell.classList.add('answer');
+					
+					fontSize = getFontSize(randomQuestion[0]);
+					questionCell.style.fontSize = fontSize;
+					
+					/*
+					questionCell.textContent = 
+					'1234567890' +	//1
+					'1234567890' +	//2
+					'1234567890' +	//3
+					'1234567890' +	//4
+					'12345678' +	//5
+					'';
+					questionCell.style.fontSize = '34px';
+					*/
 
-					//cell.textContent = '1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0';
-					//cell.style.fontSize = '12px';
+					textLength = randomQuestion[0].length;
+
 				}
 				else {
-					cell.textContent = `${fontSize}`;
-					cell.classList.add('no-print');
-					cell.style.color = 'white';
+					//questionCell.textContent = `* ${textLength}\t-\t${fontSize}`;
+					questionCell.textContent = '1';
+					questionCell.classList.add('no-print');
+					questionCell.style.color = 'white';
 				}
-				
-				cell.colSpan = 3;
             }
             return table;
         }
+		
+		
 
         // 页面加载时生成内容
         document.addEventListener('DOMContentLoaded', function() {
