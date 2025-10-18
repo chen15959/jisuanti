@@ -94,8 +94,10 @@
 			
 			while (true) {
 				numbers = Array.from({length: itemCount}, () => Math.floor(Math.random() * numberRange) + 1);
-				for (let i = 0; i < itemCount; ++i) {
-					if (i % 2 == 0) {
+
+				result = numbers[0];
+				for (let i = 1; i < itemCount; ++i) {
+					if (i % 2 != 0) {
 						result += numbers[i];
 					}
 					else {
@@ -180,7 +182,7 @@
             // 生成行内容
 			let fontSize = -1;
 			let textLength = -1;
-            for (let r = 0; r < 20; r++) {
+            for (let r = 0; r < 19; r++) {
                 const row = table.insertRow();
                 const questionCell = row.insertCell(0);
 				const answerCell = row.insertCell(1);
