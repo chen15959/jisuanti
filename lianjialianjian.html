@@ -88,16 +88,18 @@
 			const numberRange = 10 ** numberPower - 1;
 			
 			let numbers = [];
+			let operators = [];
 			let result = 0;
 			let retstr = '';
 
 			
 			while (true) {
 				numbers = Array.from({length: itemCount}, () => Math.floor(Math.random() * numberRange) + 1);
+				operators = Array.from({length: itemCount}, () => Math.floor(Math.random() + 0.5));
 
 				result = numbers[0];
 				for (let i = 1; i < itemCount; ++i) {
-					if (i % 2 != 0) {
+					if (operators[i] > 0) {
 						result += numbers[i];
 					}
 					else {
@@ -109,11 +111,11 @@
 					let retstr = `${numbers[0]}`;
 
 					for (let i = 1; i < itemCount; ++i) {
-						if (i % 2 == 0) {
-							retstr += ' - ';
+						if (operators[i] > 0) {
+							retstr += ' + ';
 						}
 						else {
-							retstr += ' + ';
+							retstr += ' - ';
 						}
 						
 						retstr += `${numbers[i]}`;
@@ -182,7 +184,7 @@
             // 生成行内容
 			let fontSize = -1;
 			let textLength = -1;
-            for (let r = 0; r < 19; r++) {
+            for (let r = 0; r < 17; r++) {
                 const row = table.insertRow();
                 const questionCell = row.insertCell(0);
 				const answerCell = row.insertCell(1);
