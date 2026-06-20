@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>乘除法去括号练习</title>
+    <style>
+        table {
+            width: 90%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+/*        
+        table, th, td {
+            border: 1px solid black;
+        }
+*/        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            font-size: 20px;
+            width: 33.33%; /* 3列等宽 */
+        }
+        th {
+            font-weight: bold;
+        }
+
+        /* 打印时隐藏分隔线 */
+        @media print {
+            hr {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="contentContainer"></div>
+
+    <script>
+        // 获取URL参数page的值，默认为1
+        function getPageParam() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const page = parseInt(urlParams.get('page')) || 1;
+            return Math.max(1, page); // 确保至少为1
+        }
+		
+		const urlParams = new URLSearchParams(window.location.search);
+        const my_max = (parseInt(urlParams.get('max')) || 20) - 1;
+
+		
+
+
+		
+		
+		
+		function createQuestion(type) {
+			for (;;) {
+				const a = Math.floor(Math.random() * 10) + 1;
+				const b = Math.floor(Math.random() * 10) + 1;
+				const c = Math.floor(Math.random() * 10) + 1;
+				//÷×
+				switch (type % 8) {
+				case 0:
+				//   a * ( b   *  c )
+					return "" + a + "×(" + b + "×" + c + ") =";
+				
+				case 1:
+				// ( a *   b ) *  c
+					return "(" + a + "×" + b + ")×" + c + " =";
+					
+				case 2:
+				//   a * ( b   /  c )
+					if ((a * b) % c == 0) {
+						return "" + a + "×(" + b + "÷" + c + ") =";
+					}
+					break;
+					
+				case 3:
+				// ( a *   b ) /  c
+					if ((a * b) % c == 0) {
+						return "(" + a + "×" + b + ")÷" + c + " =";
+					}
+					break;
+					
+				case 4:
+				//   a / ( b   *  c )
+					if (a * b * c <= 100) {
+						return "" + (a*b*c) + "÷(" + b + "×" + c + ") =";
+					}
+					break;
+					
+				case 5:
+				// ( a /   b ) *  c
+					if ((a * c) % b == 0) {
+						return "(" + a + "÷" + b + ")×" + c + " =";
+					}
+					break;
+				
+				case 6:
+				//   a / ( b   /  c )
+					if ((a * c) % b == 0) {
+						return "" + a + "÷(" + b + "÷" + c + ") =";
+					}
+					break;
+					
+				case 7:
+				// ( a /   b ) /  c
+					if (a * b * c <= 100) {
+						return "(" + (a*b*c) + "÷" + b + ")÷" + c + " =";
+					}
+					break;
+				
+				}
+			}
+		
+		}
+
+        
+        
+
+        // 创建单个表格
+        function createTable() {
+            const table = document.createElement('table');
+            // 表头行
+            const headerRow = table.insertRow();
+            const headerCell1 = headerRow.insertCell(0);
+            const headerCell2 = headerRow.insertCell(1);
+            const headerCell3 = headerRow.insertCell(2);
+            headerCell1.textContent = "姓名：";
+            headerCell2.textContent = "日期：";
+            headerCell3.textContent = "用时：";
+            // 空行
+            const emptyRow = table.insertRow();
+            const emptyCell = emptyRow.insertCell(0);
+            emptyCell.colSpan = 3;
+            emptyCell.textContent = "-----------------------------------------------------------------";
+            
+            // 生成20行内容
+            for (let r = 0; r < 20; r++) {
+                const row = table.insertRow();
+
+                for (let c = 0; c < 3; c++) {
+                    const cell = row.insertCell(c);
+                    const randomProblem = createQuestion(Math.floor(Math.random() * 8));
+                    cell.textContent = randomProblem;
+                }
+            }
+            return table;
+        }
+
+        // 页面加载时生成内容
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('contentContainer');
+            const pageCount = getPageParam();
+            for (let i = 1; i <= pageCount; i++) {
+                // 添加表格
+                const table = createTable();
+                container.appendChild(table);
+                // 如果不是最后一页，添加分页符和分隔线
+                if (i < pageCount) {
+                    // 添加分隔线
+                    const separator = document.createElement('hr');
+                    separator.style.border = '2px solid #ccc';
+                    separator.style.margin = '3px 0';
+                    container.appendChild(separator);
+
+                    // 添加分页符
+                    table.style.pageBreakAfter = 'always';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
